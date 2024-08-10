@@ -104,20 +104,15 @@ tasks {
     /*
     Build steps to get `tree_sitter` source dependency.
      */
-    register<Exec>("cloneTreesitter") {
-        val targetDir = File("src/main/vendor/tree_sitter")
-        commandLine =
-            if (targetDir.exists()) {
-                listOf("echo", "Directory 'src/main/vendor/tree_sitter' already exists. Skipping git clone.")
-            } else {
-                listOf("git", "clone", "https://github.com/tree-sitter/tree-sitter.git", targetDir.absolutePath)
-            }
+
+    register<Exec>("updateGitSubmodules") {
+        commandLine = listOf("git", "submodule", "update", "--init", "--recursive")
         group = "build"
-        description = "Clone treesitter repo."
+        description = "Initialize and update Git submodules"
     }
 
     named("compileKotlin") {
-        dependsOn("cloneTreesitter")
+        dependsOn("updateGitSubmodules")
     }
 
     /*
@@ -131,55 +126,50 @@ tasks {
         commandLine = listOf("tree-sitter", "generate")
     }
 
-    register<Exec>("compileTreeSitterGrammar") {
+    register<Exec>("compileTreeSitterStaticLib") {
         group = "build"
-        description = "Compile the Tree-sitter grammar into a shared library."
-        dependsOn("generateGrammarFiles")
+        description = "Compile the Tree-sitter grammar into a static library."
+        dependsOn("generateGrammarFiles", "treesitterGenerate")
         commandLine =
             listOf(
-                "gcc",
-                "-shared",
-                "-o",
-                "$jniOutDir/libproject_flow_syntax$sharedLibExtension",
-                "-fPIC",
-                "-I",
-                grammarSrcDir.absolutePath,
+                "gcc", "-c", "-fPIC",
+                "-o", "$jniOutDir/parser.o",
                 "${grammarSrcDir.absolutePath}/parser.c",
             )
-        outputs.dir(jniOutDir) // Make sure `outputDir` exists.
-        outputs.upToDateWhen { false } // No cache.
+        outputs.file("$jniOutDir/parser.o")
     }
 
-    named("compileTreeSitterGrammar") {
-        dependsOn("treesitterGenerate")
+    register<Exec>("createStaticLib") {
+        group = "build"
+        description = "Create a static library from the compiled Tree-sitter grammar."
+        dependsOn("compileTreeSitterStaticLib")
+        commandLine =
+            listOf(
+                "ar", "rcs",
+                "$jniOutDir/libproject_flow_syntax.a",
+                "$jniOutDir/parser.o",
+            )
+        outputs.file("$jniOutDir/libproject_flow_syntax.a")
     }
 
     register<Exec>("compileJniWrapper") {
         group = "build"
-        description = "Compile the JNI wrapper into a shared library."
-        dependsOn("compileTreeSitterGrammar")
+        description = "Compile the JNI wrapper into a shared library including Tree-sitter static library."
+        dependsOn("createStaticLib")
         commandLine =
             listOf(
-                "gcc",
-                "-shared",
-                "-o",
+                "gcc", "-shared", "-o",
                 "$jniOutDir/libtreesitter_wrapper$sharedLibExtension",
                 "-fPIC",
-                "-I",
-                "${System.getProperty("java.home")}/include",
-                "-I",
-                "${System.getProperty("java.home")}/include/$javaIncludesDir",
-                "-I",
-                "$treeSitterVendorApiDir",
-                "-I",
-                grammarSrcDir.absolutePath,
+                "-I", "${System.getProperty("java.home")}/include",
+                "-I", "${System.getProperty("java.home")}/include/$javaIncludesDir",
+                "-I", "$treeSitterVendorApiDir",
+                "-I", grammarSrcDir.absolutePath,
                 "${jniSrcDir.absolutePath}/treesitter_wrapper.cpp",
-                "-L",
-                jniOutDir.absolutePath,
-                "-lproject_flow_syntax",
+                "$jniOutDir/libproject_flow_syntax.a",
             )
-        outputs.dir(jniOutDir)
-        outputs.upToDateWhen { false } // No cache.
+        outputs.file("$jniOutDir/libtreesitter_wrapper$sharedLibExtension")
+        outputs.upToDateWhen { false }
     }
 
     // This puts our compile libraries in a place accessible to the bundled plugin.
