@@ -75,6 +75,7 @@ fun nodeTypeToType(t: String): IElementType =
         "comment" -> ProjectFlowSyntaxTypes.COMMENT
         "comment_text" -> ProjectFlowSyntaxTypes.COMMENT_TEXT
         "attribute_key" -> ProjectFlowSyntaxTypes.ATTRIBUTE_KEY
+        "kv_separator" -> ProjectFlowSyntaxTypes.KV_SEPARATOR
         "quoted_value" -> ProjectFlowSyntaxTypes.QUOTED_VALUE
         "value" -> ProjectFlowSyntaxTypes.VALUE
         "value_between_quotes" -> ProjectFlowSyntaxTypes.VALUE_BETWEEN_QUOTES
@@ -88,9 +89,12 @@ fun nodeTypeToType(t: String): IElementType =
         "explode_op" -> ProjectFlowSyntaxTypes.EXPLODE_OP
         "required_by_op" -> ProjectFlowSyntaxTypes.REQUIRED_BY_OP
         "negation_op" -> ProjectFlowSyntaxTypes.NEGATION_OP
+        "separator" -> ProjectFlowSyntaxTypes.SEPARATOR
         "left_bracket" -> ProjectFlowSyntaxTypes.LEFT_BRACKET
         "right_bracket" -> ProjectFlowSyntaxTypes.RIGHT_BRACKET
+        "double_quote" -> ProjectFlowSyntaxTypes.DOUBLE_QUOTE
         "number" -> ProjectFlowSyntaxTypes.NUMBER
+        "whitespace" -> ProjectFlowSyntaxTypes.WHITESPACE
 
         else -> ProjectFlowSyntaxTypes.UNKNOWN
     }

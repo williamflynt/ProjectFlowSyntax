@@ -26,5 +26,6 @@
         <fileType extensions="pfs" name="Project Flow Syntax file" language="ProjectFlowSyntax" implementationClass="projectflowsyntax.intellijplugin.ProjectFlowSyntaxFileType"/>
         <lang.syntaxHighlighterFactory language="ProjectFlowSyntax" implementationClass="projectflowsyntax.intellijplugin.ProjectFlowSyntaxHighlighterFactory"/>
         <lang.parserDefinition language="ProjectFlowSyntax" implementationClass="projectflowsyntax.intellijplugin.ProjectFlowSyntaxParserDefinition"/>
+        <colorSettingsPage implementation="projectflowsyntax.intellijplugin.SettingsPage" />
     </extensions>
 </idea-plugin>
