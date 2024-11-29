@@ -14,11 +14,11 @@ object ProjectFlowSyntaxHighlighterKeys {
     )
     val ATTRIBUTE_KEY = TextAttributesKey.createTextAttributesKey(
         "PFS_ATTRIBUTE_KEY",
-        DefaultLanguageHighlighterColors.CONSTANT
+        DefaultLanguageHighlighterColors.IDENTIFIER
     )
     val KV_SEPARATOR = TextAttributesKey.createTextAttributesKey(
         "PFS_KV_SEPARATOR",
-        DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
+        DefaultLanguageHighlighterColors.IDENTIFIER
     )
     val QUOTED_VALUE = TextAttributesKey.createTextAttributesKey(
         "PFS_QUOTED_VALUE",
@@ -30,7 +30,7 @@ object ProjectFlowSyntaxHighlighterKeys {
     )
     val IDENTIFIER = TextAttributesKey.createTextAttributesKey(
         "PFS_IDENTIFIER",
-        DefaultLanguageHighlighterColors.CLASS_NAME
+        DefaultLanguageHighlighterColors.IDENTIFIER
     )
     val CLUSTER_SIGIL = TextAttributesKey.createTextAttributesKey(
         "PFS_CLUSTER_SIGIL",
@@ -90,7 +90,7 @@ object ProjectFlowSyntaxHighlighterKeys {
     )
     val WHITESPACE = TextAttributesKey.createTextAttributesKey(
         "PFS_WHITESPACE",
-        DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
+        DefaultLanguageHighlighterColors.CLASS_NAME
     )
     val BAD_CHARACTER = TextAttributesKey.createTextAttributesKey(
         "PFS_BAD_CHARACTER",

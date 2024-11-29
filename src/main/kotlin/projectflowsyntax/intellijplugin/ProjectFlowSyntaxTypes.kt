@@ -95,6 +95,7 @@ fun nodeTypeToType(t: String): IElementType =
         "double_quote" -> ProjectFlowSyntaxTypes.DOUBLE_QUOTE
         "number" -> ProjectFlowSyntaxTypes.NUMBER
         "whitespace" -> ProjectFlowSyntaxTypes.WHITESPACE
+        "newline" -> ProjectFlowSyntaxTypes.WHITESPACE
 
         else -> ProjectFlowSyntaxTypes.UNKNOWN
     }
