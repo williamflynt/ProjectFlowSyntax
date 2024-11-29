@@ -5,22 +5,18 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
-import org.jetbrains.annotations.NotNull
-import org.jetbrains.annotations.Nullable
 import javax.swing.Icon
-
 
 internal class SettingsPage : ColorSettingsPage {
     override fun getIcon(): Icon? {
         return null // TODO(wf 29 Nov 2024): Return an Icon type from 'resources/icons'.
     }
 
-    @NotNull
     override fun getHighlighter(): SyntaxHighlighter {
         return ProjectFlowSyntaxHighlighter()
     }
 
-    @NotNull
+    @Suppress("LongMethod")
     override fun getDemoText(): String {
         return """
             # Project: Cloud Application Deployment
@@ -111,10 +107,9 @@ internal class SettingsPage : ColorSettingsPage {
             PreLaunchReview(duration:"1d")
             Deployment(duration:"1d")
             PostLaunchMonitoring(duration:"5d")
-        """.trimIndent()
+            """.trimIndent()
     }
 
-    @Nullable
     override fun getAdditionalHighlightingTagToDescriptorMap(): Map<String, TextAttributesKey>? {
         return null
     }
@@ -127,35 +122,35 @@ internal class SettingsPage : ColorSettingsPage {
         return ColorDescriptor.EMPTY_ARRAY
     }
 
-    @NotNull
     override fun getDisplayName(): String {
         return "ProjectFlowSyntax"
     }
 
     object Util {
-        val DESCRIPTORS = arrayOf(
-            AttributesDescriptor("Comment", ProjectFlowSyntaxHighlighterKeys.COMMENT),
-            AttributesDescriptor("Key value separator :", ProjectFlowSyntaxHighlighterKeys.KV_SEPARATOR),
-            AttributesDescriptor("Attribute", ProjectFlowSyntaxHighlighterKeys.ATTRIBUTE_KEY),
-            AttributesDescriptor("Quoted text", ProjectFlowSyntaxHighlighterKeys.QUOTED_VALUE),
-            AttributesDescriptor("Value", ProjectFlowSyntaxHighlighterKeys.VALUE),
-            AttributesDescriptor("Identifier", ProjectFlowSyntaxHighlighterKeys.IDENTIFIER),
-            AttributesDescriptor("Sigil for Cluster @", ProjectFlowSyntaxHighlighterKeys.CLUSTER_SIGIL),
-            AttributesDescriptor("Sigil for Comment #", ProjectFlowSyntaxHighlighterKeys.COMMENT_SIGIL),
-            AttributesDescriptor("Sigil for Milestone %", ProjectFlowSyntaxHighlighterKeys.MILESTONE_SIGIL),
-            AttributesDescriptor("Sigil for NewTask *", ProjectFlowSyntaxHighlighterKeys.NEW_TASK_SIGIL),
-            AttributesDescriptor("Sigil for Resource $", ProjectFlowSyntaxHighlighterKeys.RESOURCE_SIGIL),
-            AttributesDescriptor("Operator for Negation ~", ProjectFlowSyntaxHighlighterKeys.NEGATION_OP),
-            AttributesDescriptor("Operator for Explode !", ProjectFlowSyntaxHighlighterKeys.EXPLODE_OP),
-            AttributesDescriptor("Operator for Implode ~!", ProjectFlowSyntaxHighlighterKeys.IMPLODE_OP),
-            AttributesDescriptor("Operator for RequiredBy >", ProjectFlowSyntaxHighlighterKeys.REQUIRED_BY_OP),
-            AttributesDescriptor("Separator ,", ProjectFlowSyntaxHighlighterKeys.SEPARATOR),
-            AttributesDescriptor("Bracket left (", ProjectFlowSyntaxHighlighterKeys.LEFT_BRACKET),
-            AttributesDescriptor("Bracket right )", ProjectFlowSyntaxHighlighterKeys.RIGHT_BRACKET),
-            AttributesDescriptor("Double quotes \"", ProjectFlowSyntaxHighlighterKeys.DOUBLE_QUOTE),
-            AttributesDescriptor("Number 0-9", ProjectFlowSyntaxHighlighterKeys.NUMBER),
-            AttributesDescriptor("Whitespace", ProjectFlowSyntaxHighlighterKeys.WHITESPACE),
-            AttributesDescriptor("Bad character", ProjectFlowSyntaxHighlighterKeys.BAD_CHARACTER)
-        )
+        val DESCRIPTORS =
+            arrayOf(
+                AttributesDescriptor("Comment", ProjectFlowSyntaxHighlighterKeys.COMMENT),
+                AttributesDescriptor("Key value separator :", ProjectFlowSyntaxHighlighterKeys.KV_SEPARATOR),
+                AttributesDescriptor("Attribute", ProjectFlowSyntaxHighlighterKeys.ATTRIBUTE_KEY),
+                AttributesDescriptor("Quoted text", ProjectFlowSyntaxHighlighterKeys.QUOTED_VALUE),
+                AttributesDescriptor("Value", ProjectFlowSyntaxHighlighterKeys.VALUE),
+                AttributesDescriptor("Identifier", ProjectFlowSyntaxHighlighterKeys.IDENTIFIER),
+                AttributesDescriptor("Sigil for Cluster @", ProjectFlowSyntaxHighlighterKeys.CLUSTER_SIGIL),
+                AttributesDescriptor("Sigil for Comment #", ProjectFlowSyntaxHighlighterKeys.COMMENT_SIGIL),
+                AttributesDescriptor("Sigil for Milestone %", ProjectFlowSyntaxHighlighterKeys.MILESTONE_SIGIL),
+                AttributesDescriptor("Sigil for NewTask *", ProjectFlowSyntaxHighlighterKeys.NEW_TASK_SIGIL),
+                AttributesDescriptor("Sigil for Resource $", ProjectFlowSyntaxHighlighterKeys.RESOURCE_SIGIL),
+                AttributesDescriptor("Operator for Negation ~", ProjectFlowSyntaxHighlighterKeys.NEGATION_OP),
+                AttributesDescriptor("Operator for Explode !", ProjectFlowSyntaxHighlighterKeys.EXPLODE_OP),
+                AttributesDescriptor("Operator for Implode ~!", ProjectFlowSyntaxHighlighterKeys.IMPLODE_OP),
+                AttributesDescriptor("Operator for RequiredBy >", ProjectFlowSyntaxHighlighterKeys.REQUIRED_BY_OP),
+                AttributesDescriptor("Separator ,", ProjectFlowSyntaxHighlighterKeys.SEPARATOR),
+                AttributesDescriptor("Bracket left (", ProjectFlowSyntaxHighlighterKeys.LEFT_BRACKET),
+                AttributesDescriptor("Bracket right )", ProjectFlowSyntaxHighlighterKeys.RIGHT_BRACKET),
+                AttributesDescriptor("Double quotes \"", ProjectFlowSyntaxHighlighterKeys.DOUBLE_QUOTE),
+                AttributesDescriptor("Number 0-9", ProjectFlowSyntaxHighlighterKeys.NUMBER),
+                AttributesDescriptor("Whitespace", ProjectFlowSyntaxHighlighterKeys.WHITESPACE),
+                AttributesDescriptor("Bad character", ProjectFlowSyntaxHighlighterKeys.BAD_CHARACTER),
+            )
     }
 }

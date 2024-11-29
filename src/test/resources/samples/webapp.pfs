@@ -86,3 +86,7 @@ PerformanceTesting(duration:"3d")
 PreLaunchReview(duration:"1d")
 Deployment(duration:"1d")
 PostLaunchMonitoring(duration:"5d")
+
+# Explode/Implode the Deployment task
+Deployment ! 5
+Deployment < Deployment

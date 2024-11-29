@@ -51,6 +51,6 @@ class ProjectFlowSyntaxLexerAdapterFindNextTokenTest {
             tokens.add(node)
             position = node.endByte.toInt()
         }
-        assert(tokens.size == 733)
+        check(tokens.size == 749) { "expected 749, got ${tokens.size}" }
     }
 }

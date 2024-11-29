@@ -159,7 +159,7 @@ module.exports = grammar({
     resource_sigil: $ => '$',
 
     explode_op: $ => '!',
-    implode_op: $ => seq('~', '!'),
+    implode_op: $ => '<',
     required_by_op: $ => '>',
     negation_op: $ => '~',
 

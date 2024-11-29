@@ -6,98 +6,118 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 
-
 object ProjectFlowSyntaxHighlighterKeys {
-    val COMMENT = TextAttributesKey.createTextAttributesKey(
-        "PFS_COMMENT",
-        DefaultLanguageHighlighterColors.LINE_COMMENT
-    )
-    val ATTRIBUTE_KEY = TextAttributesKey.createTextAttributesKey(
-        "PFS_ATTRIBUTE_KEY",
-        DefaultLanguageHighlighterColors.IDENTIFIER
-    )
-    val KV_SEPARATOR = TextAttributesKey.createTextAttributesKey(
-        "PFS_KV_SEPARATOR",
-        DefaultLanguageHighlighterColors.IDENTIFIER
-    )
-    val QUOTED_VALUE = TextAttributesKey.createTextAttributesKey(
-        "PFS_QUOTED_VALUE",
-        DefaultLanguageHighlighterColors.STRING
-    )
-    val VALUE = TextAttributesKey.createTextAttributesKey(
-        "PFS_VALUE",
-        DefaultLanguageHighlighterColors.STRING
-    )
-    val IDENTIFIER = TextAttributesKey.createTextAttributesKey(
-        "PFS_IDENTIFIER",
-        DefaultLanguageHighlighterColors.IDENTIFIER
-    )
-    val CLUSTER_SIGIL = TextAttributesKey.createTextAttributesKey(
-        "PFS_CLUSTER_SIGIL",
-        DefaultLanguageHighlighterColors.CONSTANT
-    )
-    val COMMENT_SIGIL = TextAttributesKey.createTextAttributesKey(
-        "PFS_COMMENT_SIGIL",
-        DefaultLanguageHighlighterColors.LINE_COMMENT
-    )
-    val MILESTONE_SIGIL = TextAttributesKey.createTextAttributesKey(
-        "PFS_MILESTONE_SIGIL",
-        DefaultLanguageHighlighterColors.CONSTANT
-    )
-    val NEW_TASK_SIGIL = TextAttributesKey.createTextAttributesKey(
-        "PFS_NEW_TASK_SIGIL",
-        DefaultLanguageHighlighterColors.CONSTANT
-    )
-    val RESOURCE_SIGIL = TextAttributesKey.createTextAttributesKey(
-        "PFS_RESOURCE_SIGIL",
-        DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE
-    )
-    val IMPLODE_OP = TextAttributesKey.createTextAttributesKey(
-        "PFS_IMPLODE_OP",
-        DefaultLanguageHighlighterColors.KEYWORD
-    )
-    val EXPLODE_OP = TextAttributesKey.createTextAttributesKey(
-        "PFS_EXPLODE_OP",
-        DefaultLanguageHighlighterColors.KEYWORD
-    )
-    val REQUIRED_BY_OP = TextAttributesKey.createTextAttributesKey(
-        "PFS_REQUIRED_BY_OP",
-        DefaultLanguageHighlighterColors.KEYWORD
-    )
-    val NEGATION_OP = TextAttributesKey.createTextAttributesKey(
-        "PFS_NEGATION_OP",
-        DefaultLanguageHighlighterColors.PREDEFINED_SYMBOL
-    )
-    val SEPARATOR = TextAttributesKey.createTextAttributesKey(
-        "PFS_SEPARATOR",
-        DefaultLanguageHighlighterColors.COMMA
-    )
-    val LEFT_BRACKET = TextAttributesKey.createTextAttributesKey(
-        "PFS_LEFT_BRACKET",
-        DefaultLanguageHighlighterColors.BRACKETS
-    )
-    val RIGHT_BRACKET = TextAttributesKey.createTextAttributesKey(
-        "PFS_RIGHT_BRACKET",
-        DefaultLanguageHighlighterColors.BRACKETS
-    )
-    val DOUBLE_QUOTE = TextAttributesKey.createTextAttributesKey(
-        "PFS_DOUBLE_QUOTE",
-        DefaultLanguageHighlighterColors.STRING
-    )
-    val NUMBER = TextAttributesKey.createTextAttributesKey(
-        "PFS_NUMBER",
-        DefaultLanguageHighlighterColors.NUMBER
-    )
-    val WHITESPACE = TextAttributesKey.createTextAttributesKey(
-        "PFS_WHITESPACE",
-        DefaultLanguageHighlighterColors.CLASS_NAME
-    )
-    val BAD_CHARACTER = TextAttributesKey.createTextAttributesKey(
-        "PFS_BAD_CHARACTER",
-        DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE
-    )
+    val COMMENT =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_COMMENT",
+            DefaultLanguageHighlighterColors.LINE_COMMENT,
+        )
+    val ATTRIBUTE_KEY =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_ATTRIBUTE_KEY",
+            DefaultLanguageHighlighterColors.IDENTIFIER,
+        )
+    val KV_SEPARATOR =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_KV_SEPARATOR",
+            DefaultLanguageHighlighterColors.IDENTIFIER,
+        )
+    val QUOTED_VALUE =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_QUOTED_VALUE",
+            DefaultLanguageHighlighterColors.STRING,
+        )
+    val VALUE =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_VALUE",
+            DefaultLanguageHighlighterColors.STRING,
+        )
+    val IDENTIFIER =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_IDENTIFIER",
+            DefaultLanguageHighlighterColors.IDENTIFIER,
+        )
+    val CLUSTER_SIGIL =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_CLUSTER_SIGIL",
+            DefaultLanguageHighlighterColors.CONSTANT,
+        )
+    val COMMENT_SIGIL =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_COMMENT_SIGIL",
+            DefaultLanguageHighlighterColors.LINE_COMMENT,
+        )
+    val MILESTONE_SIGIL =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_MILESTONE_SIGIL",
+            DefaultLanguageHighlighterColors.CONSTANT,
+        )
+    val NEW_TASK_SIGIL =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_NEW_TASK_SIGIL",
+            DefaultLanguageHighlighterColors.CONSTANT,
+        )
+    val RESOURCE_SIGIL =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_RESOURCE_SIGIL",
+            DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE,
+        )
+    val IMPLODE_OP =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_IMPLODE_OP",
+            DefaultLanguageHighlighterColors.KEYWORD,
+        )
+    val EXPLODE_OP =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_EXPLODE_OP",
+            DefaultLanguageHighlighterColors.KEYWORD,
+        )
+    val REQUIRED_BY_OP =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_REQUIRED_BY_OP",
+            DefaultLanguageHighlighterColors.KEYWORD,
+        )
+    val NEGATION_OP =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_NEGATION_OP",
+            DefaultLanguageHighlighterColors.PREDEFINED_SYMBOL,
+        )
+    val SEPARATOR =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_SEPARATOR",
+            DefaultLanguageHighlighterColors.COMMA,
+        )
+    val LEFT_BRACKET =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_LEFT_BRACKET",
+            DefaultLanguageHighlighterColors.BRACKETS,
+        )
+    val RIGHT_BRACKET =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_RIGHT_BRACKET",
+            DefaultLanguageHighlighterColors.BRACKETS,
+        )
+    val DOUBLE_QUOTE =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_DOUBLE_QUOTE",
+            DefaultLanguageHighlighterColors.STRING,
+        )
+    val NUMBER =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_NUMBER",
+            DefaultLanguageHighlighterColors.NUMBER,
+        )
+    val WHITESPACE =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_WHITESPACE",
+            DefaultLanguageHighlighterColors.CLASS_NAME,
+        )
+    val BAD_CHARACTER =
+        TextAttributesKey.createTextAttributesKey(
+            "PFS_BAD_CHARACTER",
+            DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE,
+        )
 }
-
 
 class ProjectFlowSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getHighlightingLexer(): Lexer = ProjectFlowSyntaxLexerAdapter()
