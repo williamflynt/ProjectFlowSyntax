@@ -1,15 +1,15 @@
 package projectflowsyntax.intellijplugin
-
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
+import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
 
 internal class SettingsPage : ColorSettingsPage {
     override fun getIcon(): Icon? {
-        return null // TODO(wf 29 Nov 2024): Return an Icon type from 'resources/icons'.
+        return IconLoader.getIcon("/icons/projectFlowSyntaxIcon.svg", javaClass)
     }
 
     override fun getHighlighter(): SyntaxHighlighter {
