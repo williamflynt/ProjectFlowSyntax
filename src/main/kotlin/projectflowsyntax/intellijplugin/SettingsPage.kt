@@ -8,7 +8,7 @@ import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
 
 internal class SettingsPage : ColorSettingsPage {
-    override fun getIcon(): Icon? {
+    override fun getIcon(): Icon {
         return IconLoader.getIcon("/icons/projectFlowSyntaxIcon.svg", javaClass)
     }
 
@@ -107,6 +107,10 @@ internal class SettingsPage : ColorSettingsPage {
             PreLaunchReview(duration:"1d")
             Deployment(duration:"1d")
             PostLaunchMonitoring(duration:"5d")
+            
+            # Explode and Implode tasks
+            Deployment ! 5
+            ProjectKickoff, RequirementsGathering, ArchitectureDesign / InitX
             """.trimIndent()
     }
 

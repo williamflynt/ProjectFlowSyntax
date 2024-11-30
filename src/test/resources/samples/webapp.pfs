@@ -87,6 +87,6 @@ PreLaunchReview(duration:"1d")
 Deployment(duration:"1d")
 PostLaunchMonitoring(duration:"5d")
 
-# Explode/Implode the Deployment task
+# Explode and Implode tasks
 Deployment ! 5
-Deployment < Deployment
+ProjectKickoff, RequirementsGathering, ArchitectureDesign / InitX
