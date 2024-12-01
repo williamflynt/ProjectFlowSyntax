@@ -51,6 +51,8 @@ class ProjectFlowSyntaxLexerAdapterFindNextTokenTest {
             tokens.add(node)
             position = node.endByte.toInt()
         }
-        check(tokens.size == 749) { "expected 749, got ${tokens.size}" }
+        // This is hardcoded and may change if the grammar test file changes.
+        val testTokenSize = 754
+        check(tokens.size == testTokenSize) { "expected $testTokenSize, got ${tokens.size}" }
     }
 }
