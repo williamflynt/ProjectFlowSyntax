@@ -10,19 +10,19 @@ EntityDefinition:
     Task | Resource | Milestone | Cluster;
 
 Task:
-    name=ID (attributes=Attributes)?;
+    name=ID Attributes?;
 
 Resource:
-    RESOURCE_PREFIX name=ID (attributes=Attributes)?;
+    RESOURCE_PREFIX name=ID Attributes?;
 
 Milestone:
-    MILESTONE_PREFIX name=ID (attributes=Attributes)?;
+    MILESTONE_PREFIX name=ID Attributes?;
 
 Cluster:
     CLUSTER_PREFIX name=ID (':' items+=(Task | Milestone) (',' items+=(Task | Milestone))*)?;
 
-Attributes:
-    '(' attributeList+=Attribute (',' attributeList+=Attribute)* ')';
+fragment Attributes:
+    '(' attributes+=Attribute? (',' attributes+=Attribute)* ')';
 
 Attribute:
     name=ID ':' (value=STRING_VALUE | value=SIMPLE_VALUE | value=NUMBER | value=ID);
