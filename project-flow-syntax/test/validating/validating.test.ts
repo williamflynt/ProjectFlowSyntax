@@ -4,15 +4,15 @@ import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import type { Diagnostic } from "vscode-languageserver-types";
 import { createProjectFlowSyntaxServices } from "../../src/language/project-flow-syntax-module.js";
-import { Model, isModel } from "../../src/language/generated/ast.js";
+import { Project, isProject } from "../../src/language/generated/ast.js";
 
 let services: ReturnType<typeof createProjectFlowSyntaxServices>;
-let parse:    ReturnType<typeof parseHelper<Model>>;
-let document: LangiumDocument<Model> | undefined;
+let parse:    ReturnType<typeof parseHelper<Project>>;
+let document: LangiumDocument<Project> | undefined;
 
 beforeAll(async () => {
     services = createProjectFlowSyntaxServices(EmptyFileSystem);
-    const doParse = parseHelper<Model>(services.ProjectFlowSyntax);
+    const doParse = parseHelper<Project>(services.ProjectFlowSyntax);
     parse = (input: string) => doParse(input, { validation: true });
 
     // activate the following if your linking test requires elements from a built-in library, for example
@@ -57,7 +57,7 @@ function checkDocumentValid(document: LangiumDocument): string | undefined {
           ${document.parseResult.parserErrors.map(e => e.message).join('\n  ')}
     `
         || document.parseResult.value === undefined && `ParseResult is 'undefined'.`
-        || !isModel(document.parseResult.value) && `Root AST object is a ${document.parseResult.value.$type}, expected a '${Model}'.`
+        || !isProject(document.parseResult.value) && `Root AST object is a ${document.parseResult.value.$type}, expected a '${Project}'.`
         || undefined;
 }
 
