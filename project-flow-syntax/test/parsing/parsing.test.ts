@@ -3,7 +3,8 @@ import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import { createProjectFlowSyntaxServices } from "../../src/language/project-flow-syntax-module.js";
-import { Project, isProject } from "../../src/language/generated/ast.js";
+import { Project } from "../../src/language/generated/ast.js";
+import { checkDocumentValid } from "../util.js";
 
 let services: ReturnType<typeof createProjectFlowSyntaxServices>;
 let parse:    ReturnType<typeof parseHelper<Project>>;
@@ -48,13 +49,3 @@ describe('Parsing tests', () => {
         `);
     });
 });
-
-function checkDocumentValid(document: LangiumDocument): string | undefined {
-    return document.parseResult.parserErrors.length && s`
-        Parser errors:
-          ${document.parseResult.parserErrors.map(e => e.message).join('\n  ')}
-    `
-        || document.parseResult.value === undefined && `ParseResult is 'undefined'.`
-        || !isProject(document.parseResult.value) && `Root AST object is a ${document.parseResult.value.$type}, expected a '${Project}'.`
-        || undefined;
-}
