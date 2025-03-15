@@ -19,7 +19,7 @@ Milestone:
     MILESTONE_PREFIX name=ID (attributes=Attributes)?;
 
 Cluster:
-    CLUSTER_PREFIX name=ID (':' items+=(TaskRef | MilestoneRef) (',' items+=(TaskRef | MilestoneRef))*)?;
+    CLUSTER_PREFIX name=ID (':' items+=(Task | Milestone) (',' items+=(Task | Milestone))*)?;
 
 Attributes:
     '(' attributeList+=Attribute (',' attributeList+=Attribute)* ')';
@@ -35,29 +35,28 @@ DependencyChain:
     (leftMost+=(Task | Milestone) (',' leftMost+=(Task | Milestone))* segments+=DependencySegment+);
 
 DependencySegment:
-    (removal?='~')? '>' rightSide+=(Task | Milestone) (',' rightSide+=(Task | Milestone))*;
+    RemoveFlag? '>' rightSide+=(Task | Milestone) (',' rightSide+=(Task | Milestone))*;
 
 Assignment:
-    (resources+=Resource (',' resources+=Resource)* (removal?='~')? '>' tasks+=Task (',' tasks+=Task)*) |
-    (tasks+=Task (',' tasks+=Task)* (removal?='~')? '>' resources+=Resource (',' resources+=Resource)*);
+    (resources+=Resource (',' resources+=Resource)* RemoveFlag? '>' tasks+=Task (',' tasks+=Task)*) |
+    (tasks+=Task (',' tasks+=Task)* RemoveFlag? '>' resources+=Resource (',' resources+=Resource)*);
+
+fragment RemoveFlag: remove?='~';
 
 SplitTask:
-    (left?='*' '>' taskRef=TaskRef) | (taskRef=TaskRef '>' right?='*');
+    (left?='*' '>' task=Task) | (task=Task '>' right?='*');
 
 RemoveEntity:
-    '~' entity=(TaskRef | ResourceRef | MilestoneRef | ClusterRef);
+    '~' entity=EntityDefinition;
 
 ExplodeTask:
-    source=TaskRef '!' count=NUMBER;
+    source=Task '!' (
+        count=NUMBER |
+        (tasks+=Task (',' tasks+=Task)+)
+    );
 
 ImplodeTask:
-    sources+=TaskRef (',' sources+=TaskRef)* '/' target=TaskRef;
-
-// Reference types
-TaskRef: id=ID;
-ResourceRef: RESOURCE_PREFIX id=ID;
-MilestoneRef: MILESTONE_PREFIX id=ID;
-ClusterRef: CLUSTER_PREFIX id=ID;
+    sources+=Task (',' sources+=Task)* '/' target=Task;
 
 hidden terminal WS: /\s+/;
 hidden terminal SL_COMMENT: /#[^\n\r]*/;

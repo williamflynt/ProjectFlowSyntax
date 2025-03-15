@@ -6,6 +6,9 @@ entity
 $entity(speciality: embedded)
 ~ %entity
 X(duration: 6) > Y > Z
+Y ~> Z
+A > B
+Y, Z > END
  A > Y
  B>Z
  %M > A
@@ -13,3 +16,6 @@ X(duration: 6) > Y > Z
  Y > *
   T1, T2, T3 > T4, T5, T6
    T1, T2, T2 ~> T4, T5, T6
+X ! X1, X2
+Y ! 7
+X1, X2 / X
