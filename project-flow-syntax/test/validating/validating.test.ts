@@ -5,7 +5,7 @@ import { parseHelper } from "langium/test";
 import type { Diagnostic } from "vscode-languageserver-types";
 import { createProjectFlowSyntaxServices } from "../../src/language/project-flow-syntax-module.js";
 import { Project } from "../../src/language/generated/ast.js";
-import { checkDocumentValid } from "../util.js";
+import { documentIsValid } from "../util.js";
 
 let services: ReturnType<typeof createProjectFlowSyntaxServices>;
 let parse:    ReturnType<typeof parseHelper<Project>>;
@@ -15,10 +15,10 @@ beforeAll(async () => {
     services = createProjectFlowSyntaxServices(EmptyFileSystem);
     const doParse = parseHelper<Project>(services.ProjectFlowSyntax);
     parse = (input: string) => doParse(input, { validation: true });
-
-    // activate the following if your linking test requires elements from a built-in library, for example
-    // await services.shared.workspace.WorkspaceManager.initializeWorkspace([]);
 });
+
+// TODO: Validate an example of all line types/parse rules with business logic that should be applied.
+// TODO: Parse a document with cyclic deps and check for error messages on the right line.
 
 describe('Validating', () => {
   
@@ -32,7 +32,7 @@ describe('Validating', () => {
             //  'checkDocumentValid()' to sort out (critical) typos first,
             // and then evaluate the diagnostics by converting them into human readable strings;
             // note that 'toHaveLength()' works for arrays and strings alike ;-)
-            checkDocumentValid(document) || document?.diagnostics?.map(diagnosticToString)?.join('\n')
+            documentIsValid(document) || document?.diagnostics?.map(diagnosticToString)?.join('\n')
         ).toHaveLength(0);
     });
 
@@ -42,7 +42,7 @@ describe('Validating', () => {
         `);
 
         expect(
-            checkDocumentValid(document) || document?.diagnostics?.map(diagnosticToString)?.join('\n')
+            documentIsValid(document) || document?.diagnostics?.map(diagnosticToString)?.join('\n')
         ).toEqual(
             // 'expect.stringContaining()' makes our test robust against future additions of further validation rules
             expect.stringContaining(s`
