@@ -19,3 +19,4 @@ Y, Z > END
 X ! X1, X2
 Y ! 7
 X1, X2 / X
+X > X.1, X.2

@@ -41,22 +41,22 @@ Assignment:
     (resources+=Resource (',' resources+=Resource)* RemoveFlag? '>' tasks+=Task (',' tasks+=Task)*) |
     (tasks+=Task (',' tasks+=Task)* RemoveFlag? '>' resources+=Resource (',' resources+=Resource)*);
 
-fragment RemoveFlag: remove?='~';
+fragment RemoveFlag: remove?=NEGATE;
 
 SplitTask:
     (left?='*' '>' task=Task) | (task=Task '>' right?='*');
 
 RemoveEntity:
-    '~' entity=EntityDefinition;
+    NEGATE entity=EntityDefinition;
 
 ExplodeTask:
-    source=Task '!' (
+    task=Task '!' (
         count=NUMBER |
         (tasks+=Task (',' tasks+=Task)+)
     );
 
 ImplodeTask:
-    sources+=Task (',' sources+=Task)* '/' target=Task;
+    tasks+=Task (',' tasks+=Task)+ '/' target=Task;
 
 hidden terminal WS: /\s+/;
 hidden terminal SL_COMMENT: /#[^\n\r]*/;
@@ -66,7 +66,8 @@ terminal MILESTONE_PREFIX: /%/;
 terminal RESOURCE_PREFIX: /\$/;
 terminal CLUSTER_PREFIX: /@/;
 
-terminal ID: /[_a-zA-Z][\w_]*/;
-terminal NUMBER: /[1-9]+\d*/;
+terminal NEGATE: /~/;
+terminal ID: /[_a-zA-Z][\w_.-]*/;
+terminal NUMBER returns number: /[1-9]+\d*/;
 terminal STRING_VALUE: /"[^"]*"/;
 terminal SIMPLE_VALUE: /[^,():>\s]+/;
