@@ -17,6 +17,7 @@ const packageContent = await fs.readFile(packagePath, 'utf-8');
 export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
     const services = createProjectFlowSyntaxServices(NodeFileSystem).ProjectFlowSyntax;
     const model = await extractAstNode<Project>(fileName, services);
+    // TODO: Something more useful, like DOT.
     const generatedFilePath = generateJavaScript(model, fileName, opts.destination);
     console.log(chalk.green(`JavaScript code generated successfully: ${generatedFilePath}`));
 };
@@ -35,6 +36,7 @@ export default function(): void {
         .command('generate')
         .argument('<file>', `source file (possible file extensions: ${fileExtensions})`)
         .option('-d, --destination <dir>', 'destination directory of generating')
+        // TODO: Update the description of what we're generating (when we fix this).
         .description('generates JavaScript code that prints "Hello, {name}!" for each greeting in a source file')
         .action(generateAction);
 

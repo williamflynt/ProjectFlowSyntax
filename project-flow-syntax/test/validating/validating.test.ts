@@ -1,8 +1,6 @@
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import { EmptyFileSystem, type LangiumDocument } from "langium";
-import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
-import type { Diagnostic } from "vscode-languageserver-types";
 import { createProjectFlowSyntaxServices } from "../../src/language/project-flow-syntax-module.js";
 import { Project } from "../../src/language/generated/ast.js";
 import { documentIsValid } from "../util.js";
@@ -17,41 +15,68 @@ beforeAll(async () => {
     parse = (input: string) => doParse(input, { validation: true });
 });
 
-// TODO: Validate an example of all line types/parse rules with business logic that should be applied.
-// TODO: Parse a document with cyclic deps and check for error messages on the right line.
+beforeEach(async () => {
+    services.ProjectFlowSyntax.validation.ProjectFlowSyntaxValidator.resetDependencyNodes()
+})
 
-describe('Validating', () => {
+describe('Cycle detection', () => {
   
-    test('check no errors', async () => {
-        document = await parse(`
-            person Langium
-        `);
-
-        expect(
-            // here we first check for validity of the parsed document object by means of the reusable function
-            //  'checkDocumentValid()' to sort out (critical) typos first,
-            // and then evaluate the diagnostics by converting them into human readable strings;
-            // note that 'toHaveLength()' works for arrays and strings alike ;-)
-            documentIsValid(document) || document?.diagnostics?.map(diagnosticToString)?.join('\n')
-        ).toHaveLength(0);
+    test('ignores non-cycles in single line', async () => {
+        document = await parse(`X > Y > Z`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(0);
     });
 
-    test('check capital letter validation', async () => {
-        document = await parse(`
-            person langium
-        `);
-
-        expect(
-            documentIsValid(document) || document?.diagnostics?.map(diagnosticToString)?.join('\n')
-        ).toEqual(
-            // 'expect.stringContaining()' makes our test robust against future additions of further validation rules
-            expect.stringContaining(s`
-                [1:19..1:26]: Person name should start with a capital.
-            `)
-        );
+    test('ignores non-cycles in multiple lines', async () => {
+        document = await parse(`X > Y > Z\nA>B>C\nX>B\nC>Z`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(0);
     });
+
+    test('detects cycles in single line', async () => {
+        document = await parse(`X > Y > X`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(1);
+        // @ts-expect-error
+        expect(document.diagnostics[0].message).toContain('Cycle detected in dependency chain');
+    });
+
+    test('detects self cycles', async () => {
+        document = await parse(`X > X`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(1);
+        // @ts-expect-error
+        expect(document.diagnostics[0].message).toContain('Cycle detected in dependency chain');
+    });
+
+    test('detects cycles across multiple lines', async () => {
+        document = await parse(`X > Y\nY > Z\nZ > X`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(1);
+        // @ts-expect-error
+        expect(document.diagnostics[0].message).toContain('Cycle detected in dependency chain');
+    });
+
+    test('properly accounts for removed deps in order', async () => {
+        document = await parse(`X > Y\nY > Z\nX ~> Y\nZ > X`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(0);
+    });
+
+    test('detects cycles before dependency removal', async () => {
+        // Test that our validator is "temporally accurate" - it works line by line in order.
+        document = await parse(`X > Y\nY > Z\nZ > X\nX ~> Y`);
+        const validity = documentIsValid(document);
+        expect(validity.isValid).toBe(true);
+        expect(document.diagnostics).toHaveLength(1);
+        // @ts-expect-error
+        expect(document.diagnostics[0].message).toContain('Cycle detected in dependency chain');
+    });
+
 });
-
-function diagnosticToString(d: Diagnostic) {
-    return `[${d.range.start.line}:${d.range.start.character}..${d.range.end.line}:${d.range.end.character}]: ${d.message}`;
-}
