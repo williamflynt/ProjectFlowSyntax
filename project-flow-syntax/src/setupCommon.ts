@@ -4,6 +4,19 @@ import { LanguageClientConfig } from 'monaco-editor-wrapper';
 import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import { useWorkerFactory } from 'monaco-editor-wrapper/workerFactory';
 
+export const SAMPLE_CODE = `# My Project
+buy_paint
+buy_brush
+set_up_easel
+buy_paint, buy_brush > set_up_easel > paint_picture
+paint_picture ! paint_landscape, paint_foreground
+paint_landscape, paint_foreground > %picture_done
+@setup_tasks: buy_paint, buy_brush, set_up_easel
+@paint_tasks: paint_landscape, paint_foreground
+$me > buy_paint, buy_brush, set_up_easel, paint_landscape
+$my_helper > paint_foreground
+`
+
 export const defineUserServices = () => {
     return {
         userServices: {

@@ -1,5 +1,5 @@
 import { MonacoEditorLanguageClientWrapper, UserConfig } from 'monaco-editor-wrapper';
-import { configureWorker, defineUserServices } from './setupCommon.js';
+import {configureWorker, defineUserServices, SAMPLE_CODE} from './setupCommon.js';
 import monarchSyntax from "./syntaxes/project-flow-syntax.monarch.js";
 
 export const setupConfigClassic = (): UserConfig => {
@@ -9,7 +9,7 @@ export const setupConfigClassic = (): UserConfig => {
             editorAppConfig: {
                 $type: 'classic',
                 languageId: 'project-flow-syntax',
-                code: `// Project Flow Syntax is running in the web!`,
+                code: SAMPLE_CODE,
                 useDiffEditor: false,
                 languageExtensionConfig: { id: 'langium' },
                 languageDef: monarchSyntax,
