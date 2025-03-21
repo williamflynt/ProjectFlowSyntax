@@ -1,4 +1,5 @@
 import { MonacoEditorLanguageClientWrapper, UserConfig } from 'monaco-editor-wrapper';
+import {MonacoLanguageClient} from "monaco-languageclient";
 import {configureWorker, defineUserServices, SAMPLE_CODE} from './setupCommon.js';
 
 export const setupConfigExtended = (): UserConfig => {
@@ -51,8 +52,13 @@ export const setupConfigExtended = (): UserConfig => {
     };
 };
 
-export const executeExtended = async (htmlElement: HTMLElement) => {
+export const executeExtended = async (htmlElement: HTMLElement): Promise<{
+    wrapper: MonacoEditorLanguageClientWrapper;
+    languageClient: MonacoLanguageClient;
+}> => {
     const userConfig = setupConfigExtended();
     const wrapper = new MonacoEditorLanguageClientWrapper();
     await wrapper.initAndStart(userConfig, htmlElement);
+    const languageClient = wrapper.getLanguageClient()!;
+    return { wrapper, languageClient };
 };
