@@ -66,7 +66,7 @@ PerformanceTesting > %IntegrationComplete
 Deployment > %LaunchDay
 
 # Task attributes
-ProjectKickoff(duration:"1d")
+ProjectKickoff(duration: "1d")
 RequirementsGathering(duration:"3d")
 ArchitectureDesign(duration:"2d")
 ConfigureCloudInstance(duration:"1d")
@@ -85,7 +85,7 @@ SystemIntegration(duration:"4d")
 PerformanceTesting(duration:"3d")
 PreLaunchReview(duration:"1d")
 Deployment(duration:"1d")
-PostLaunchMonitoring(duration:"5d")
+PostLaunchMonitoring(duration: "5d")
 
 # Explode and Implode tasks
 Deployment ! 5

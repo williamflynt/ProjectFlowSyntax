@@ -18,7 +18,7 @@ ArchitectureDesign > $James, $Carrie, $Juan, $Yan
 @DatabaseSetup: ConfigureCloudInstance, SetupDatabase, LoadInitialData, DatabaseTesting
 ConfigureCloudInstance > SetupDatabase > LoadInitialData > DatabaseTesting
 ConfigureCloudInstance > $Juan
-SetupDatabase > $Yan
+$Yan > SetupDatabase
 LoadInitialData > $Yan
 DatabaseTesting > $Yan, $James
 
@@ -63,7 +63,7 @@ PerformanceTesting > %IntegrationComplete
 Deployment > %LaunchDay
 
 # Task attributes
-ProjectKickoff(duration:"1d")
+ProjectKickoff(duration: "1d")
 RequirementsGathering(duration:"3d")
 ArchitectureDesign(duration:"2d")
 ConfigureCloudInstance(duration:"1d")
@@ -82,8 +82,8 @@ SystemIntegration(duration:"4d")
 PerformanceTesting(duration:"3d")
 PreLaunchReview(duration:"1d")
 Deployment(duration:"1d")
-PostLaunchMonitoring(duration:"5d")
+PostLaunchMonitoring(duration: "5d")
 
-# Explode, then Implode the Deployment task
+# Explode and Implode tasks
 Deployment ! 5
-D1, D2, D3 / Deployment
+ProjectKickoff, RequirementsGathering, ArchitectureDesign / InitX
