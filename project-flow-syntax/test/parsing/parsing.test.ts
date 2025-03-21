@@ -5,7 +5,7 @@ import { createProjectFlowSyntaxServices } from "../../src/language/project-flow
 import { Project } from "../../src/language/generated/ast.js";
 import {documentIsValid, findPfsFiles, whitespaced} from "../util.js";
 import * as fs from "fs";
-import {astNodeToProjectFlowSyntax} from "../../src/cli/generator.js";
+import {astNodeToProjectFlowSyntax} from "../../src/cli/generator/generateProjectFlowSyntax.js";
 
 let samples: string[];
 let services: ReturnType<typeof createProjectFlowSyntaxServices>;

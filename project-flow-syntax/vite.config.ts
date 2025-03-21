@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import * as path from 'path';
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 
+// @ts-ignore
 export default defineConfig(() => {
     const config = {
         build: {
