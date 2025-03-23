@@ -1,4 +1,4 @@
 // Expose to GraalJS.
-import {sourceToJsonAst} from "../parser.js";
+import {syncParse} from "../syncParse.js";
 
-(globalThis as any).sourceToJsonAst = sourceToJsonAst;
+(globalThis as any).sourceToJsonAst = syncParse;

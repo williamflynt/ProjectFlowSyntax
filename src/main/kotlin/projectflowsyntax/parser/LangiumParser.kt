@@ -18,7 +18,7 @@ class LangiumParser(jsLibPath: String) {
         }
         val source = Source.newBuilder("js", jsLib).build()
         context.eval(source)
-        parseFunction = context.getBindings("js").getMember("sourceToJsonAst")
+        parseFunction = context.getBindings("js").getMember("syncParse")
     }
 
     fun parse(input: String): org.graalvm.polyglot.Value {

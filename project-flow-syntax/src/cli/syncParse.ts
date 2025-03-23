@@ -1,10 +1,27 @@
+import {createProjectFlowSyntaxServices} from "../language/project-flow-syntax-module.js";
+import {EmptyFileSystem} from "langium";
+import {Project} from "../language/generated/ast.js";
 import { AstNode } from "langium";
-import {Project} from "../../language/generated/ast.js";
+
+
+const services = createProjectFlowSyntaxServices({...EmptyFileSystem});
+const parser = services.ProjectFlowSyntax.parser.LangiumParser;
+
+/**
+ * Convert source to JSON AST - synchronous version without validations.
+ */
+export const syncParse = (source: string): string => {
+    const project = parser.parse<Project>(source);
+    if (project.parserErrors?.length > 0) {
+        return JSON.stringify({errors: project.parserErrors});
+    }
+    return generateJsonAst(project.value)
+};
 
 /**
  * Type guard to check if a value is an AstNode
  */
-function isAstNode(value: unknown): value is AstNode {
+const isAstNode = (value: unknown): value is AstNode => {
     return !!value && typeof value === 'object' && '$type' in value;
 }
 
@@ -45,7 +62,7 @@ const astNodeToPlainObject = (node: AstNode): Record<string, any> => {
 /**
  * Generate a JSON AST from our root AST node.
  */
-export const generateJsonAst = (project: Project): string => {
+const generateJsonAst = (project: Project): string => {
     const plainObject = astNodeToPlainObject(project);
     return JSON.stringify(plainObject);
 };
