@@ -25,7 +25,7 @@ fragment Attributes:
     '(' attributes+=Attribute? (',' attributes+=Attribute)* ')';
 
 Attribute:
-    name=ID ':' (value=STRING_VALUE | value=SIMPLE_VALUE | value=NUMBER | value=ID);
+    name=ID ':' (value=STRING_VALUE | value=SIMPLE_VALUE | value=NUMBER | value=ID | value = NEGATE);
 
 Operation:
     DependencyChain | Assignment | SplitTask |

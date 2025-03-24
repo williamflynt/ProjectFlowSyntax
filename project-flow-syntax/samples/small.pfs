@@ -2,6 +2,7 @@
 entity
 % wawa
 %entity
+@myCluster: uno, dos, tres
 
 $entity(speciality: embedded)
 ~ %entity
