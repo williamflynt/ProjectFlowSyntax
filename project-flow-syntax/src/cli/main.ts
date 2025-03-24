@@ -8,6 +8,7 @@ import { NodeFileSystem } from 'langium/node';
 import * as url from 'node:url';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import {extractEntities} from "../util/extractEntities.js";
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const packagePath = path.resolve(__dirname, '..', '..', 'package.json');
@@ -17,8 +18,16 @@ export const generateAction = async (fileName: string, opts: GenerateOptions): P
     const services = createProjectFlowSyntaxServices(NodeFileSystem).ProjectFlowSyntax;
     const model = await extractAstNode<Project>(fileName, services);
     const jsonAstString = services.serializer.JsonSerializer.serialize(model)
-    console.log(chalk.green(`JavaScript code generated successfully!`));
+    console.log(chalk.green(`JSON AST generated successfully!`));
     console.log(jsonAstString);
+};
+
+export const snapshotAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
+    const services = createProjectFlowSyntaxServices(NodeFileSystem).ProjectFlowSyntax;
+    const model = await extractAstNode<Project>(fileName, services);
+    const snapshot = extractEntities(model)
+    console.log(chalk.green(`Project snapshot generated successfully!`));
+    console.log(JSON.stringify(snapshot));
 };
 
 export type GenerateOptions = {
@@ -34,9 +43,13 @@ export default function(): void {
     program
         .command('generate')
         .argument('<file>', `source file (possible file extensions: ${fileExtensions})`)
-        .option('-d, --destination <dir>', 'destination directory of generating')
         .description('generates an AST representation of the source file in JSON format and prints to console')
         .action(generateAction);
+    program
+        .command('snapshot')
+        .argument('<file>', `source file (possible file extensions: ${fileExtensions})`)
+        .description('parses the source file and generates a snapshot of the project and entities')
+        .action(snapshotAction);
 
     program.parse(process.argv);
 }
