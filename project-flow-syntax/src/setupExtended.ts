@@ -12,6 +12,9 @@ export const setupConfigExtended = (): UserConfig => {
             serviceConfig: defineUserServices(),
             editorAppConfig: {
                 $type: 'extended',
+                editorOptions: {
+                    minimap: {enabled: false},
+                },
                 languageId: 'project-flow-syntax',
                 code: SAMPLE_CODE,
                 useDiffEditor: false,
