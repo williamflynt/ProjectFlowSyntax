@@ -12,9 +12,10 @@ EntityDefinition:
 Task:
     name=ID
         (Attributes?) |
-        (name=ID low=NUMBER likely=NUMBER high=NUMBER description=STRING_VALUE?) |
-        (name=ID low=NUMBER high=NUMBER description=STRING_VALUE?) |
-        (name=ID likely=NUMBER description=STRING_VALUE?);
+        // Designed to help enter duration and description quickly, as if typing notes/mind-mapping.
+        (name=ID durationLow=NUMBER durationLikely=NUMBER durationHigh=NUMBER description=STRING_VALUE?) |
+        (name=ID durationLow=NUMBER durationHigh=NUMBER description=STRING_VALUE?) |
+        (name=ID durationLikely=NUMBER description=STRING_VALUE?);
 
 Resource:
     RESOURCE_PREFIX name=ID Attributes?;
