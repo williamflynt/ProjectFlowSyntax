@@ -10,7 +10,10 @@ EntityDefinition:
     Task | Resource | Milestone | Cluster;
 
 Task:
-    name=ID Attributes?;
+    (name=ID Attributes?) |
+    (name=ID low=NUMBER likely=NUMBER high=NUMBER description=UNQUOTED_STRING?) |
+    (name=ID low=NUMBER high=NUMBER description=UNQUOTED_STRING?) |
+    (name=ID likely=NUMBER description=UNQUOTED_STRING?);
 
 Resource:
     RESOURCE_PREFIX name=ID Attributes?;
@@ -71,3 +74,4 @@ terminal ID: /[_a-zA-Z][\w_.-]*/;
 terminal NUMBER returns number: /[1-9]+\d*/;
 terminal STRING_VALUE: /"[^"]*"/;
 terminal SIMPLE_VALUE: /[^,():>\s]+/;
+terminal UNQUOTED_STRING: ' ' -> '\n';
