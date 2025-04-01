@@ -478,6 +478,18 @@ const getOrCreate = (node: AstTask | AstMilestone | AstResource, p: ProjectEntit
         } else {
             p.tasks[node.name] = mergeAttrs(p.tasks[node.name], node.attributes);
         }
+        if (typeof node.durationLow === 'number') {
+            p.tasks[node.name].attributes.durationLow = node.durationLow;
+        }
+        if (typeof node.durationLikely === 'number') {
+            p.tasks[node.name].attributes.durationLikely = node.durationLikely;
+        }
+        if (typeof node.durationHigh === 'number') {
+            p.tasks[node.name].attributes.durationHigh = node.durationHigh;
+        }
+        if (typeof node.description === 'string') {
+            p.tasks[node.name].attributes.description = node.description;
+        }
         return p.tasks[node.name];
     }
     if (node.$type === 'Milestone') {

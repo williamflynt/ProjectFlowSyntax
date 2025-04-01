@@ -1,26 +1,27 @@
-import { beforeAll, describe, expect, test } from "vitest";
-import { EmptyFileSystem, type LangiumDocument } from "langium";
-import { parseHelper } from "langium/test";
-import { createProjectFlowSyntaxServices } from "../../src/language/project-flow-syntax-module.js";
-import { Project } from "../../src/language/generated/ast.js";
+import {beforeAll, describe, expect, test} from "vitest";
+import {EmptyFileSystem, type LangiumDocument} from "langium";
+import {parseHelper} from "langium/test";
+import {createProjectFlowSyntaxServices} from "../../src/language/project-flow-syntax-module.js";
+import {Project} from "../../src/language/generated/ast.js";
 import {documentIsValid, findPfsFiles, whitespaced} from "../util.js";
 import * as fs from "fs";
 import {astNodeToProjectFlowSyntax} from "../../src/cli/generator/generateProjectFlowSyntax.js";
 
-let samples: string[];
+const samples = findPfsFiles('samples');
 let services: ReturnType<typeof createProjectFlowSyntaxServices>;
-let parse:    ReturnType<typeof parseHelper<Project>>;
+let parse: ReturnType<typeof parseHelper<Project>>;
 let document: LangiumDocument<Project> | undefined;
 
 beforeAll(async () => {
-    samples = findPfsFiles('samples');
     services = createProjectFlowSyntaxServices(EmptyFileSystem);
     parse = parseHelper<Project>(services.ProjectFlowSyntax);
 });
 
 describe('General sample parsing', () => {
-    test('test all samples parse without top level errors', async () => {
-        for (const sample of samples) {
+    for (const sample of samples) {
+        const nameComponents = sample.split('/')
+        const name = nameComponents[nameComponents.length - 1]
+        test(`${name}`, async () => {
             const content = fs.readFileSync(sample).toString()
             document = await parse(content);
             const validity = documentIsValid(document);
@@ -31,8 +32,8 @@ describe('General sample parsing', () => {
             const genVal = documentIsValid(genDoc);
             expect(genVal.isValid).toStrictEqual(true);
             expect(genVal.errors.length).toStrictEqual(0);
-        }
-    });
+        })
+    }
 });
 
 /* Define a bunch of test cases and test them the same way. */
@@ -73,8 +74,18 @@ const f = (t: TestCase) => {
 
 describe('Task Rule', () => {
     const tests: TestCase[] = [
-        {name: 'simple ID', input: 'X', idealizedSyntax: 'X', expectedAstValues: {$type: 'Task', name: 'X', attributes: []}},
-        {name: 'ID with attributes', input: 'X(a: attr, b: 123123, c: 0123, d: "d")', idealizedSyntax: 'X(a: attr, b: 123123, c: 0123, d: "d")', expectedAstValues: {$type: 'Task', name: 'X'}},
+        {
+            name: 'simple ID',
+            input: 'X',
+            idealizedSyntax: 'X',
+            expectedAstValues: {$type: 'Task', name: 'X', attributes: []}
+        },
+        {
+            name: 'ID with attributes',
+            input: 'X(a: attr, b: 123123, c: 0123, d: "d")',
+            idealizedSyntax: 'X(a: attr, b: 123123, c: 0123, d: "d")',
+            expectedAstValues: {$type: 'Task', name: 'X'}
+        },
     ]
     for (const t of tests) {
         const permutedInput = whitespaced(t.input)
