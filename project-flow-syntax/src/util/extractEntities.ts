@@ -1,8 +1,5 @@
 import {
     Attribute,
-    Task as AstTask,
-    Milestone as AstMilestone,
-    Resource as AstResource,
     Cluster as AstCluster,
     isAssignment,
     isCluster,
@@ -15,6 +12,9 @@ import {
     isResource,
     isSplitTask,
     isTask,
+    Milestone as AstMilestone,
+    Resource as AstResource,
+    Task as AstTask,
 } from "../language/generated/ast.js";
 import {AstNode} from "langium";
 
@@ -35,7 +35,7 @@ export type ProjectEntities = {
  * Extracts entities from a Project.
  * @param node
  * @param p
- * @param clock Logical clock for tracking changes
+ * @param clock Logical clock for tracking operations and generating unique names.
  */
 export const extractEntities = (node: AstNode, p?: ProjectEntities, clock: number = 0): ProjectEntities => {
     clock++;
@@ -247,6 +247,10 @@ class ClusterItems {
     }
 }
 
+type TypedNamed = { type: string, name: string }
+
+type Relation = { source: TypedNamed, target: TypedNamed }
+
 /**
  * RelationalIndex is a generic class that holds relationship records and indexes them by both source and target.
  * It allows for common set operations, like reading, checking existence, and adding/removing relationships.
@@ -359,6 +363,14 @@ abstract class RelationalIndex<S extends BaseEntity, T extends BaseEntity> {
     public has(source: S, target: T): boolean {
         const sourceRelationships = this.sourceIndex.get(source);
         return sourceRelationships ? sourceRelationships.has(target) : false;
+    }
+
+    toJSON() {
+        return Array.from(this.sourceIndex.entries()).reduce<Relation[]>((acc, entry) => {
+            return [...acc, ...Array.from(entry[1]).map((item) => {
+                return {source: {type: entry[0].type, name: entry[0].name}, target: {type: item.type, name: item.name}}
+            })]
+        }, [])
     }
 }
 

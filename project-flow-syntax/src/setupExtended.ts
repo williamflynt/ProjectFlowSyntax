@@ -1,4 +1,4 @@
-import { MonacoEditorLanguageClientWrapper, UserConfig } from 'monaco-editor-wrapper';
+import {MonacoEditorLanguageClientWrapper, UserConfig} from 'monaco-editor-wrapper';
 import {MonacoLanguageClient} from "monaco-languageclient";
 import {configureWorker, defineUserServices, SAMPLE_CODE} from './setupCommon.js';
 
@@ -12,6 +12,9 @@ export const setupConfigExtended = (): UserConfig => {
             serviceConfig: defineUserServices(),
             editorAppConfig: {
                 $type: 'extended',
+                editorOptions: {
+                    minimap: {enabled: false},
+                },
                 languageId: 'project-flow-syntax',
                 code: SAMPLE_CODE,
                 useDiffEditor: false,
@@ -39,7 +42,7 @@ export const setupConfigExtended = (): UserConfig => {
                         }
                     },
                     filesOrContents: extensionFilesOrContents,
-                }],                
+                }],
                 userConfiguration: {
                     json: JSON.stringify({
                         'workbench.colorTheme': 'Default Dark Modern',
@@ -60,5 +63,5 @@ export const executeExtended = async (htmlElement: HTMLElement): Promise<{
     const wrapper = new MonacoEditorLanguageClientWrapper();
     await wrapper.initAndStart(userConfig, htmlElement);
     const languageClient = wrapper.getLanguageClient()!;
-    return { wrapper, languageClient };
+    return {wrapper, languageClient};
 };
